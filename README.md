@@ -1,5 +1,6 @@
-# BIRDS OF A FEATHER GAME
+### WELCOME TO "BIRDS OF A FEATHER" GAME!
+# Here Andy and Toai, creators of this project.
 
-# RUN ON CHROME
+# TO PLAY, RUN ON CHROME
 
     flutter run -d chrome
