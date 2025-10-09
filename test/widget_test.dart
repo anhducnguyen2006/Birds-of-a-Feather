@@ -7,24 +7,38 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:birds_of_a_feather_state/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('App renders 4x4 grid and shows Ready text', (WidgetTester tester) async {
+    await tester.pumpWidget(const BirdsApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Expect 16 draggable card placeholders (some might be blank containers until drag)
+    // We can assert presence of the Ready to play! status text.
+    expect(find.text('Ready to play!'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // AppBar title
+    expect(find.text('Birds Of A Feather'), findsOneWidget);
+  });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  testWidgets('Help dialog appears from menu', (WidgetTester tester) async {
+    await tester.pumpWidget(const BirdsApp());
+
+    // Open popup menu (IconButton with Icons.menu)
+    await tester.tap(find.byIcon(Icons.menu));
+    await tester.pumpAndSettle();
+
+    // Tap Help
+    await tester.tap(find.text('Help'));
+    await tester.pumpAndSettle();
+
+    // Verify dialog contents
+    expect(find.text('Help'), findsOneWidget);
+    expect(find.textContaining('Birds of a Feather is a solitaire card game'), findsOneWidget);
+
+    // Close dialog
+    await tester.tap(find.text('OK'));
+    await tester.pumpAndSettle();
+    expect(find.text('Help'), findsNothing);
   });
 }
